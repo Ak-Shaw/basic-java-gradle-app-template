@@ -1,0 +1,36 @@
+plugins {
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+version = '1.0.0'
+
+mainClassName = 'Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-lang3:3.9'
+}
+
+jar {
+
+    // The MainClass attribute specifies the main class for the jar.
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+
+    // This enables dependency collection for building the jar.
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
+    // Adding resources directory to the JAR
+    into 'resources', {
+        from 'resources'
+    }
+}
